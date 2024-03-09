@@ -1,7 +1,12 @@
+import { Container } from '@radix-ui/themes'
+import UserList from './components/UserList'
+
 export default function Home() {
   return (
     <main>
-      <h1>Home Page</h1>
+      <Container>
+        <UserList />
+      </Container>
     </main>
   )
 }
