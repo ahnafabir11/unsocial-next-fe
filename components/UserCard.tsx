@@ -52,16 +52,24 @@ export default function UserCard({
         </AvatarFallback>
       </Avatar>
 
-      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-center mb-2">
+      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-center mb-2 hover:underline">
         <Link href={`/profile/${id}`}>{fullName}</Link>
       </h4>
 
       <div className="flex h-5 items-center justify-center space-x-2 mb-4">
-        <Link href={`/profile/${id}/followers`}>{followerCount} Followers</Link>
+        <small className="text-sm font-medium leading-none hover:underline">
+          <Link href={`/profile/${id}/followers`}>
+            {followerCount} Followers
+          </Link>
+        </small>
+
         <Separator orientation="vertical" />
-        <Link href={`/profile/${id}/followings`}>
-          {followingCount} Followings
-        </Link>
+
+        <small className="text-sm font-medium leading-none hover:underline">
+          <Link href={`/profile/${id}/followings`}>
+            {followingCount} Followings
+          </Link>
+        </small>
       </div>
 
       <Button
