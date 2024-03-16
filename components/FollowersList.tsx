@@ -2,28 +2,29 @@
 
 import useFollowProfile from "@/hooks/mutations/useFollowProfile";
 import useUnfollowProfile from "@/hooks/mutations/useUnfollowProfile";
-import { useUsers } from "@/hooks/queries/userUsers";
+import useFollowers from "@/hooks/queries/useFollowers";
+import usePagination from "@/hooks/usePagination";
 import { showToastError } from "@/lib/helper";
 import { useSearchParams } from "next/navigation";
 import Paginator from "./Paginator";
 import UserCard from "./UserCard";
-import usePagination from "@/hooks/usePagination";
 
-export default function UsersList() {
+interface FollowersListProps {
+  profileId: string;
+}
+
+export default function FollowersList({ profileId }: FollowersListProps) {
   const searchParams = useSearchParams();
   const { baseUrl, currentPage, nextPageUrl, previousPageUrl } = usePagination(
     searchParams,
-    "/"
+    `/profile/${profileId}/followers`
   );
-  const { users, usersCount, usersError, refetchUsers, isUsersLoading } =
-    useUsers(currentPage, 12);
+  const { followers, totalFollowers, followersError, isFollowersLoading } =
+    useFollowers(profileId, currentPage, 12);
   const { isFollowProfilePending, mutateFollowProfileAsync } =
     useFollowProfile();
   const { isUnfollowProfilePending, mutateUnfollowProfileAsync } =
     useUnfollowProfile();
-
-  if (isUsersLoading) return "loading...";
-  if (usersError) return "error";
 
   const handleFollowUser = async (profileId: string, followed: boolean) => {
     try {
@@ -37,13 +38,16 @@ export default function UsersList() {
     }
   };
 
+  if (isFollowersLoading) return "loading...";
+  if (followersError) return "error";
+
   return (
-    <div>
+    <>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-8">
-        {users.map((user) => {
+        {followers.map((follow) => {
+          const { myself, followed, user } = follow;
           const {
             id,
-            followed,
             fullName,
             coverPicture,
             followerCount,
@@ -55,6 +59,7 @@ export default function UsersList() {
             <UserCard
               key={id}
               id={id}
+              myself={myself}
               followed={followed}
               fullName={fullName}
               coverPicture={coverPicture}
@@ -70,15 +75,21 @@ export default function UsersList() {
         })}
       </div>
 
-      <Paginator
-        total={usersCount}
-        limit={12}
-        currentPage={currentPage}
-        baseUrl={baseUrl}
-        nextPageUrl={nextPageUrl}
-        previousPageUrl={previousPageUrl}
-        className="mb-8"
-      />
-    </div>
+      {totalFollowers > 0 ? (
+        <Paginator
+          total={totalFollowers}
+          limit={12}
+          currentPage={currentPage}
+          baseUrl={baseUrl}
+          nextPageUrl={nextPageUrl}
+          previousPageUrl={previousPageUrl}
+          className="mb-8"
+        />
+      ) : (
+        <h2 className="text-3xl font-semibold tracking-tight text-center">
+          This profile has no followers
+        </h2>
+      )}
+    </>
   );
 }

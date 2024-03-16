@@ -14,9 +14,37 @@ type UserType = {
   followingCount: number;
 };
 
+type FollowStatus = "PENDING" | "APPROVED";
+
+type FollowType = {
+  createdAt: string;
+  status: FollowStatus;
+  followerId: string;
+  followingId: string;
+  myself: true;
+  followed: false;
+  user: UserType;
+};
+
 type ProfileResponseType = {
   message: string;
   data: UserType;
+};
+
+type ProfileFollowersResponseType = {
+  message: string;
+  data: {
+    totalFollowers: number;
+    followers: FollowType[];
+  };
+};
+
+type ProfileFollowingsResponseType = {
+  message: string;
+  data: {
+    totalFollowings: number;
+    followings: FollowType[];
+  };
 };
 
 export const followProfile = (
@@ -38,5 +66,29 @@ export const unfollowProfile = (
     `/profile/${profileId}/unfollow`,
     null,
     options
+  );
+};
+
+export const getProfileFollowers = (
+  profileId: string,
+  page?: number,
+  limit?: number,
+  options?: AxiosRequestConfig
+) => {
+  return axios.get<ProfileFollowersResponseType>(
+    `/profile/${profileId}/followers`,
+    { params: { page, limit }, ...options }
+  );
+};
+
+export const getProfileFollowings = (
+  profileId: string,
+  page?: number,
+  limit?: number,
+  options?: AxiosRequestConfig
+) => {
+  return axios.get<ProfileFollowingsResponseType>(
+    `/profile/${profileId}/followings`,
+    { params: { page, limit }, ...options }
   );
 };

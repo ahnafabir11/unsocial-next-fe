@@ -16,7 +16,7 @@ export const success = [
       "Successfully logged out and you're being redirected to login page.",
   },
   {
-    code: "USERS_LIST",
+    code: "USERS_FETCHED",
     title: "Profiles list fetched",
     message: "Successfully fetched all the profiles excluding you.",
   },
@@ -27,6 +27,16 @@ export const success = [
   },
   {
     code: "PROFILE_UNFOLLOWED",
+    title: "Profile has been unfollowed",
+    message: "Your are not following this profile now.",
+  },
+  {
+    code: "FOLLOWERS_FETCHED",
+    title: "Profile has been unfollowed",
+    message: "Your are not following this profile now.",
+  },
+  {
+    code: "FOLLOWINGS_FETCHED",
     title: "Profile has been unfollowed",
     message: "Your are not following this profile now.",
   },

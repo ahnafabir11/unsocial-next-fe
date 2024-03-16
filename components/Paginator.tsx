@@ -10,6 +10,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { getPagination } from "@/lib/helper";
+import { cn } from "@/lib/utils";
 import { Fragment } from "react";
 
 interface PaginatorProps extends React.ComponentProps<"nav"> {
@@ -41,11 +42,10 @@ export default function Paginator({
           <PaginationItem>
             <PaginationPrevious
               href={previousPageUrl}
-              className={
-                currentPage === 1
-                  ? "pointer-events-none cursor-not-allowed text-gray-500"
-                  : ""
-              }
+              className={cn(
+                currentPage === 1 &&
+                  "pointer-events-none cursor-not-allowed text-gray-500"
+              )}
             />
           </PaginationItem>
 
@@ -73,11 +73,10 @@ export default function Paginator({
           <PaginationItem>
             <PaginationNext
               href={nextPageUrl}
-              className={
-                maxPage === currentPage
-                  ? "pointer-events-none cursor-not-allowed text-gray-500"
-                  : ""
-              }
+              className={cn(
+                maxPage === currentPage &&
+                  "pointer-events-none cursor-not-allowed text-gray-500"
+              )}
             />
           </PaginationItem>
         </PaginationContent>

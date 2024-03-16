@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { getAvatarFallback } from "@/lib/helper";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -13,6 +14,7 @@ interface UserCardProps {
   followerCount: number;
   profilePicture: null | string;
   followingCount: number;
+  myself?: boolean;
   followed: boolean;
   disableFollowBtn?: boolean;
   handleFollowUser: (id: string, followed: boolean) => void;
@@ -24,6 +26,7 @@ export default function UserCard({
   fullName,
   coverPicture,
   followerCount,
+  myself = false,
   profilePicture,
   followingCount,
   handleFollowUser,
@@ -74,7 +77,7 @@ export default function UserCard({
 
       <Button
         disabled={disableFollowBtn}
-        className="block mb-4 mx-auto"
+        className={cn("block mb-4 mx-auto", myself && "invisible")}
         onClick={() => handleFollowUser(id, followed)}
       >
         {followed ? "Unfollow" : "Follow"}
