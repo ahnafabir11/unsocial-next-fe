@@ -1,26 +1,28 @@
-import { Heading, Text } from '@radix-ui/themes'
-import { Metadata } from 'next'
-import Link from 'next/link'
-import SignUpForm from '../components/forms/SignUpForm'
+import SignUpForm from "@/components/SignUpForm";
+import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: 'Sign Up',
-}
+  title: "Sign Up",
+};
 
 export default function page() {
   return (
     <main className="h-screen flex justify-center items-center">
       <div className="max-w-sm w-full rounded p-4 m-2 shadow">
-        <Heading>SIGN UP</Heading>
-        <Text as="p" size="2" color="gray" weight="medium" mb="4">
-          Already have an account?{' '}
-          <Link href="/signin">
-            <Text color="indigo">Sign In</Text>
+        <h2 className="scroll-m-20 text-3xl font-bold tracking-tight">
+          SIGN UP
+        </h2>
+
+        <p className="text-sm font-medium leading-none mb-8">
+          Already have an account?{" "}
+          <Link href="/signin" className="underline">
+            Sign In
           </Link>
-        </Text>
+        </p>
 
         <SignUpForm />
       </div>
     </main>
-  )
+  );
 }

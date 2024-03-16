@@ -1,36 +1,30 @@
-import '@radix-ui/themes/styles.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import ThemeProvider from './services/providers/ThemeProvider'
-import QueryProvider from './services/providers/QueryProvider'
-import Header from './components/layout/Header'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import QueryProvider from "@/services/providers/QueryProvider";
+import { Toaster } from "@/components/ui/toaster";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'Unsocial',
-    template: '%s | Unsocial',
+    default: "Unsocial",
+    template: "%s | Unsocial",
   },
-  description: 'A next generation social media app for unsocial people',
-}
+  description: "A next generation social media app for unsocial people",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider>
-          <QueryProvider>
-            <Header />
-            {children}
-          </QueryProvider>
-        </ThemeProvider>
+        <QueryProvider>{children}</QueryProvider>
+        <Toaster />
       </body>
     </html>
-  )
+  );
 }
