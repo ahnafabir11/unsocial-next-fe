@@ -6,8 +6,12 @@ export default function useUnfollowProfile() {
 
   const { data, error, isPending, mutateAsync } = useMutation({
     mutationFn: (profileId: string) => unfollowProfile(profileId),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["auth"] });
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({
+        queryKey: ["profile", { profileId: data.data.data.id }],
+      });
     },
   });
 

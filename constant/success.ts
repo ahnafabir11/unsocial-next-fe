@@ -40,4 +40,14 @@ export const success = [
     title: "Profile has been unfollowed",
     message: "Your are not following this profile now.",
   },
+  {
+    code: "PROFILE_FETCHED",
+    title: "Profile has been fetched",
+    message: "Successfully fetched all the details of this profile.",
+  },
+  {
+    code: "PROFILE_UPDATED",
+    title: "Profile has been updated",
+    message: "Successfully updated the changes in profile.",
+  },
 ];

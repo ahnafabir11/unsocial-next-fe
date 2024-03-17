@@ -12,6 +12,8 @@ type UserType = {
   createdAt: string;
   followerCount: number;
   followingCount: number;
+  myself: boolean;
+  followed: boolean;
 };
 
 type FollowStatus = "PENDING" | "APPROVED";
@@ -45,6 +47,10 @@ type ProfileFollowingsResponseType = {
     totalFollowings: number;
     followings: FollowType[];
   };
+};
+
+export const getProfile = (profileId: string, options?: AxiosRequestConfig) => {
+  return axios.get<ProfileResponseType>(`/profile/${profileId}`, options);
 };
 
 export const followProfile = (

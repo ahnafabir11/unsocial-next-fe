@@ -6,8 +6,12 @@ export default function useFollowProfile() {
 
   const { data, error, isPending, mutateAsync } = useMutation({
     mutationFn: (profileId: string) => followProfile(profileId),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["auth"] });
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({
+        queryKey: ["profile", { profileId: data.data.data.id }],
+      });
     },
   });
 
