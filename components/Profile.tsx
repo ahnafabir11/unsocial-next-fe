@@ -6,6 +6,7 @@ import useProfile from "@/hooks/queries/useProfile";
 import { getAvatarFallback, showToastError } from "@/lib/helper";
 import Image from "next/image";
 import Link from "next/link";
+import EditProfileDialog from "./EditProfileDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -66,10 +67,16 @@ export default function Profile({ profileId }: ProfileProps) {
 
       <div className="p-4 pt-0 md:p-8 md:pt-0">
         <Avatar className="h-32 w-32 mx-auto -mt-20 mb-4 md:mx-0">
-          <AvatarImage
-            src={profilePicture ?? undefined}
-            alt={`profile picture of ${fullName}`}
-          />
+          <AvatarImage src={profilePicture ?? undefined} asChild>
+            {profilePicture && (
+              <Image
+                width={100}
+                height={100}
+                src={profilePicture}
+                alt={`profile picture of ${fullName}`}
+              />
+            )}
+          </AvatarImage>
           <AvatarFallback className="text-2xl font-bold md:text-4xl">
             {getAvatarFallback(fullName)}
           </AvatarFallback>
@@ -100,9 +107,7 @@ export default function Profile({ profileId }: ProfileProps) {
 
           <div className="space-y-2 md:space-y-0 md:space-x-2">
             {myself ? (
-              <Button className="w-full md:w-auto" variant="outline">
-                Edit Profile
-              </Button>
+              <EditProfileDialog fullName={fullName} about={about} />
             ) : (
               <Button
                 className="w-full md:w-auto"
@@ -120,7 +125,7 @@ export default function Profile({ profileId }: ProfileProps) {
         <p className="text-lg font-semibold mb-2">About</p>
 
         {about ? (
-          <small className="text-xm leading-none">Email address</small>
+          <small className="text-xm leading-none whitespace-pre">{about}</small>
         ) : (
           <p className="text-xs text-muted-foreground">
             Information about this user is not available.

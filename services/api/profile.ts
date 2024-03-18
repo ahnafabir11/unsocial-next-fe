@@ -5,9 +5,9 @@ type UserType = {
   id: string;
   email: string;
   fullName: string;
-  about: string;
-  coverPicture: string;
-  profilePicture: string;
+  about: null | string;
+  coverPicture: null | string;
+  profilePicture: null | string;
   verified: boolean;
   createdAt: string;
   followerCount: number;
@@ -51,6 +51,10 @@ type ProfileFollowingsResponseType = {
 
 export const getProfile = (profileId: string, options?: AxiosRequestConfig) => {
   return axios.get<ProfileResponseType>(`/profile/${profileId}`, options);
+};
+
+export const editProfile = (data: FormData, options?: AxiosRequestConfig) => {
+  return axios.put<ProfileResponseType>("/profile", data, options);
 };
 
 export const followProfile = (
