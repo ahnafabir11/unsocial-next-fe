@@ -1,4 +1,4 @@
-import { logoutCurrentUser } from "@/app/services/api/auth";
+import { logoutCurrentUser } from "@/services/api/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useLogoutMutation() {
