@@ -78,7 +78,7 @@ export default function UserCard({
       <Button
         disabled={disableFollowBtn}
         className={cn("block mb-4 mx-auto", myself && "invisible")}
-        onClick={() => handleFollowUser(id, followed)}
+        // onClick={() => handleFollowUser(id, followed)}
       >
         {followed ? "Unfollow" : "Follow"}
       </Button>

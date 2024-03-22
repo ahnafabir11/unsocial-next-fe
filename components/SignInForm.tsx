@@ -37,7 +37,7 @@ export default function SignInForm() {
       await loginMutateAsync(values);
     } catch (e) {
       const error = getErrorResponse(e);
-      handleValidationError(error, form);
+      handleValidationError<LoginBodyType>(error, form);
     }
   };
 
@@ -51,7 +51,7 @@ export default function SignInForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="jon.doe@mail.com" {...field} />
+                <Input {...field} placeholder="jon.doe@mail.com" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,9 +66,9 @@ export default function SignInForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
+                  {...field}
                   type="password"
                   placeholder="Enter your password"
-                  {...field}
                 />
               </FormControl>
               <FormMessage />

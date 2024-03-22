@@ -1,7 +1,7 @@
 import { toast } from "@/components/ui/use-toast";
 import { errors } from "@/constant/errors";
-import { isAxiosError } from "axios";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { AxiosError, isAxiosError } from "axios";
+import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
 export function getErrorResponse(e: unknown) {
   if (!isAxiosError(e) || !e.response) {
@@ -13,15 +13,26 @@ export function getErrorResponse(e: unknown) {
 }
 
 export function showToastError(e: unknown) {
-  const error = getErrorResponse(e);
-  if (!error) return;
+  if (!(e instanceof AxiosError) || !e.response) {
+    toast({ variant: "destructive", title: "COULD NOT CONNECT TO THE SERVER" });
+    return;
+  }
+
+  const error = e.response.data;
   const selectedError = errors.find(({ code }) => code === error.message);
-  if (!selectedError) return;
+
+  if (!selectedError) {
+    toast({ variant: "destructive", title: "UNKNOWN ERROR" });
+    return;
+  }
+
   toast({
     variant: "destructive",
     title: selectedError.title,
     description: selectedError.message,
   });
+
+  return;
 }
 
 export function handleValidationError<T extends FieldValues>(
@@ -33,7 +44,7 @@ export function handleValidationError<T extends FieldValues>(
   if (error.message === "VALIDATION_ERROR") {
     for (const [key, messages] of Object.entries(error.data)) {
       for (const message of messages as string[]) {
-        form.setError(key as any, { message });
+        form.setError(key as Path<T>, { message });
       }
     }
   }
