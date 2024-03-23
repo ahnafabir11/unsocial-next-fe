@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <section className="h-screen flex flex-col overflow-hidden">
       <Header />
-      <main className="overflow-auto">{children}</main>
+      <main className="overflow-auto flex-grow">{children}</main>
     </section>
   );
 }

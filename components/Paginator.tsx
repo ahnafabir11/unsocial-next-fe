@@ -9,7 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { getPagination } from "@/lib/helper";
+import { getPagination, updateUrlWithQuery } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { Fragment } from "react";
 
@@ -18,8 +18,6 @@ interface PaginatorProps extends React.ComponentProps<"nav"> {
   limit: number;
   currentPage: number;
   baseUrl: string;
-  nextPageUrl: string;
-  previousPageUrl: string;
 }
 
 export default function Paginator({
@@ -27,8 +25,6 @@ export default function Paginator({
   limit,
   currentPage,
   baseUrl,
-  nextPageUrl,
-  previousPageUrl,
   ...props
 }: PaginatorProps) {
   const maxPage = Math.ceil(total / limit);
@@ -41,7 +37,7 @@ export default function Paginator({
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              href={previousPageUrl}
+              href={updateUrlWithQuery(baseUrl, { page: currentPage - 1 })}
               className={cn(
                 currentPage === 1 &&
                   "pointer-events-none cursor-not-allowed text-gray-500"
@@ -59,7 +55,7 @@ export default function Paginator({
                 ) : (
                   <PaginationItem>
                     <PaginationLink
-                      href={`${baseUrl}?page=${page}`}
+                      href={updateUrlWithQuery(baseUrl, { page })}
                       isActive={currentPage === page}
                     >
                       {page}
@@ -72,7 +68,8 @@ export default function Paginator({
 
           <PaginationItem>
             <PaginationNext
-              href={nextPageUrl}
+              aria-disabled={maxPage === currentPage}
+              href={updateUrlWithQuery(baseUrl, { page: currentPage + 1 })}
               className={cn(
                 maxPage === currentPage &&
                   "pointer-events-none cursor-not-allowed text-gray-500"

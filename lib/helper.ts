@@ -1,5 +1,5 @@
 import { toast } from "@/components/ui/use-toast";
-import { errors } from "@/constant/errors";
+import { SERVER_ERROR, errors } from "@/constant/errors";
 import { AxiosError, isAxiosError } from "axios";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
@@ -102,4 +102,56 @@ export function getPagination(c: number, m: number) {
   }
 
   return rangeWithDots;
+}
+
+export function objectToQueryString(obj: Record<string, any>): string {
+  const queryString = Object.entries(obj)
+    .filter(([_, value]) => value !== undefined && value !== null)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+    )
+    .join("&");
+
+  return queryString.length > 0 ? `?${queryString}` : "";
+}
+
+export function updateUrlWithQuery(
+  url: string,
+  obj: Record<string, any>
+): string {
+  // Assuming a dummy domain for relative URLs
+  const urlObj = new URL(url, "https://example.com");
+  const searchParams = urlObj.searchParams;
+
+  Object.entries(obj).forEach(([key, value]) => {
+    if (
+      value !== undefined &&
+      value !== null &&
+      (value === 0 || value.toString().trim() !== "")
+    ) {
+      if (searchParams.has(key)) {
+        // Update existing query parameter
+        searchParams.set(key, value.toString());
+      } else {
+        // Add new query parameter
+        searchParams.append(key, value.toString());
+      }
+    }
+  });
+
+  // Remove the dummy domain if present
+  return urlObj.toString().replace(/^https:\/\/example.com/, "");
+}
+
+export function handleFetchError(code: number) {
+  if (code >= 400) {
+    const hasErrorDetails = SERVER_ERROR.find((status) => code === status.code);
+
+    if (hasErrorDetails) {
+      throw new Error(hasErrorDetails.statusText);
+    } else {
+      throw new Error("SOMETHING_WENT_WRONG");
+    }
+  }
 }

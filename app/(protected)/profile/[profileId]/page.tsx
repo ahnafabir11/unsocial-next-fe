@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import Container from "@/components/ui/container";
 import { Separator } from "@/components/ui/separator";
 import { BASE_URL } from "@/constant/api";
+import { getProfile } from "@/lib/data";
 import { getAvatarFallback } from "@/lib/helper";
 import { Metadata, ResolvingMetadata } from "next";
 import { cookies } from "next/headers";
@@ -69,14 +70,7 @@ export async function generateMetadata(
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
-  const token = cookies().get("token");
-
-  // FETCHING DATA
-  const data: ProfileResponseType = await fetch(
-    `${BASE_URL}/profile/${params.profileId}`,
-    { headers: { Cookie: `token=${token?.value}` } }
-  ).then((res) => res.json());
-
+  const profile = await getProfile(params.profileId);
   const {
     id,
     about,
@@ -87,7 +81,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     followerCount,
     profilePicture,
     followingCount,
-  } = data.data;
+  } = profile;
 
   return (
     <Container>
@@ -124,8 +118,8 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
           <div className="mb-4 md:flex items-center justify-between md:mb-8">
             <div className="mb-4 md:mb-0">
-              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-center mb-2 hover:underline md:text-left md:text-2xl">
-                <Link href={`/profile/${id}`}>{fullName}</Link>
+              <h4 className="text-xl font-semibold tracking-tight text-center mb-2 md:text-left md:text-2xl">
+                {fullName}
               </h4>
 
               <div className="flex h-5 items-center justify-center space-x-2 md:justify-start">

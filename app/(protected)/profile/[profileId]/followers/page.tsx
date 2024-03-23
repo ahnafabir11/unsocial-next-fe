@@ -2,8 +2,11 @@ import Paginator from "@/components/Paginator";
 import UserCard from "@/components/UserCard";
 import Container from "@/components/ui/container";
 import { BASE_URL } from "@/constant/api";
+import { getProfileFollowers } from "@/lib/data";
+import { updateUrlWithQuery } from "@/lib/helper";
 import { Metadata, ResolvingMetadata } from "next";
 import { cookies } from "next/headers";
+import { z } from "zod";
 
 interface FollowersProps {
   params: { profileId: string };
@@ -25,29 +28,9 @@ type UserType = {
   followed: boolean;
 };
 
-type FollowStatus = "PENDING" | "APPROVED";
-
-type FollowType = {
-  createdAt: string;
-  status: FollowStatus;
-  followerId: string;
-  followingId: string;
-  myself: true;
-  followed: false;
-  user: UserType;
-};
-
 type ProfileResponseType = {
   message: string;
   data: UserType;
-};
-
-type FollowersResponseType = {
-  message: string;
-  data: {
-    totalFollowers: number;
-    followers: FollowType[];
-  };
 };
 
 export async function generateMetadata(
@@ -86,28 +69,38 @@ export default async function Followers({
   params,
   searchParams,
 }: FollowersProps) {
-  const token = cookies().get("token");
-
   // QUERIES FOR USERS
-  const search = searchParams?.search || "";
-  const page = Number(searchParams?.page) || 1;
-  const limit = Number(searchParams?.limit) || 12;
+  const usersQuerySchema = z.object({
+    search: z.string().default(""),
+    page: z.coerce.number().default(1),
+    limit: z.coerce.number().default(12),
+  });
 
-  // FETCHING DATA
-  const queries = `?page=${page}&limit=${limit}&search=${search}`;
-  const data: FollowersResponseType = await fetch(
-    `${BASE_URL}/profile/${params.profileId}/followers${queries}`,
-    { headers: { Cookie: `token=${token?.value}` } }
-  ).then((res) => res.json());
-  const { followers, totalFollowers } = data.data;
+  const validation = usersQuerySchema.safeParse({
+    page: searchParams?.page,
+    limit: searchParams?.limit,
+    search: searchParams?.search,
+  });
+
+  if (!validation.success) {
+    throw new Error("Invalid Query Params !");
+  }
+
+  const { page, limit, search } = validation.data;
+
+  const { followers, totalFollowers } = await getProfileFollowers(
+    params.profileId,
+    validation.data
+  );
 
   const handleFollowUser = (profileId: string, followed: boolean) => {
     console.log({ profileId, followed });
   };
 
-  const PAGINATOR_BASE_URL = `/profile/${params.profileId}/followers`;
-  const PAGINATOR_NEXT_URL = `${PAGINATOR_BASE_URL}?page=${page + 1}`;
-  const PAGINATOR_PREVIOUS_URL = `${PAGINATOR_BASE_URL}?page=${page - 1}`;
+  const PAGINATOR_BASE_URL = updateUrlWithQuery(
+    `/profile/${params.profileId}/followers`,
+    validation.data
+  );
 
   return (
     <>
@@ -148,8 +141,6 @@ export default async function Followers({
           currentPage={page}
           total={totalFollowers}
           baseUrl={PAGINATOR_BASE_URL}
-          nextPageUrl={PAGINATOR_NEXT_URL}
-          previousPageUrl={PAGINATOR_PREVIOUS_URL}
         />
       ) : (
         <h2 className="text-3xl font-semibold tracking-tight text-center">

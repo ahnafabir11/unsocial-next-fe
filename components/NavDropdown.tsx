@@ -6,45 +6,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { BASE_URL } from "@/constant/api";
+import { getMyProfile } from "@/lib/data";
 import { getAvatarFallback } from "@/lib/helper";
-import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-
-type UserType = {
-  id: string;
-  email: string;
-  fullName: string;
-  about: string;
-  coverPicture: string;
-  profilePicture: string;
-  verified: boolean;
-  createdAt: string;
-  followerCount: number;
-  followingCount: number;
-};
-type CurrentUserResponseType = {
-  message: string;
-  data: UserType;
-};
 
 export default async function NavDropdown() {
-  const token = cookies().get("token");
-  if (!token) redirect("/signin");
-
-  // FETCHING DATA
-  await (function () {
-    return new Promise((resolve) => {
-      setTimeout(resolve, 1000);
-    });
-  })();
-  const res = await fetch(`${BASE_URL}/auth/me`, {
-    headers: { Cookie: `token=${token.value}` },
-  });
-  const data: CurrentUserResponseType = await res.json();
-  const { id, email, fullName, profilePicture } = data.data;
+  const profile = await getMyProfile();
+  const { id, email, fullName, profilePicture } = profile;
 
   const handleLogout = () => {};
 

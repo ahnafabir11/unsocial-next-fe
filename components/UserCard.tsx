@@ -36,6 +36,7 @@ export default function UserCard({
     <Card className="overflow-hidden">
       {coverPicture ? (
         <Image
+          priority
           width={320}
           height={96}
           src={coverPicture}
