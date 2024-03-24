@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import useSignUpMutation from "@/hooks/mutations/useSignUpMutation";
 import { getErrorResponse, handleValidationError } from "@/lib/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormErrorAlert from "./FormErrorAlert";
@@ -33,6 +34,7 @@ export const signUpBodySchema = z
 export type SignUpBodyType = z.infer<typeof signUpBodySchema>;
 
 export default function SignUpForm() {
+  const router = useRouter();
   const {
     signUpMutateData,
     signUpMutateAsync,
@@ -46,6 +48,7 @@ export default function SignUpForm() {
   const onSubmit = async (values: SignUpBodyType) => {
     try {
       await signUpMutateAsync(values);
+      router.push("/signin");
     } catch (e) {
       const error = getErrorResponse(e);
       handleValidationError(error, form);

@@ -1,4 +1,5 @@
 import Paginator from "@/components/Paginator";
+import ProfilesFilter from "@/components/ProfilesFilter";
 import UserCard from "@/components/UserCard";
 import Container from "@/components/ui/container";
 import { BASE_URL } from "@/constant/api";
@@ -103,8 +104,10 @@ export default async function Followings({
   );
 
   return (
-    <>
-      <Container className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-8">
+    <Container className="py-8">
+      <ProfilesFilter baseURL={PAGINATOR_BASE_URL} />
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-4">
         {followings.map((follow) => {
           const { myself, followed, user } = follow;
           const {
@@ -132,12 +135,11 @@ export default async function Followings({
             />
           );
         })}
-      </Container>
+      </div>
 
       {totalFollowings > 0 ? (
         <Paginator
           limit={limit}
-          className="mb-8"
           currentPage={page}
           total={totalFollowings}
           baseUrl={PAGINATOR_BASE_URL}
@@ -147,6 +149,6 @@ export default async function Followings({
           This profile has no followings
         </h2>
       )}
-    </>
+    </Container>
   );
 }

@@ -10,12 +10,11 @@ import { getMyProfile } from "@/lib/data";
 import { getAvatarFallback } from "@/lib/helper";
 import Image from "next/image";
 import Link from "next/link";
+import LogoutDropdownMenuItem from "./LogoutDropdownMenuItem";
 
 export default async function NavDropdown() {
   const profile = await getMyProfile();
   const { id, email, fullName, profilePicture } = profile;
-
-  const handleLogout = () => {};
 
   return (
     <DropdownMenu>
@@ -67,7 +66,7 @@ export default async function NavDropdown() {
         <DropdownMenuItem asChild>
           <Link href="/">Users</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <LogoutDropdownMenuItem />
       </DropdownMenuContent>
     </DropdownMenu>
   );

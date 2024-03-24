@@ -45,5 +45,5 @@ export const getCurrentUser = (options?: AxiosRequestConfig) => {
 };
 
 export const logoutCurrentUser = (options?: AxiosRequestConfig) => {
-  return axios.get<LogoutCurrentUserResponseType>("/auth/logout", options);
+  return axios.put<LogoutCurrentUserResponseType>("/auth/logout", options);
 };

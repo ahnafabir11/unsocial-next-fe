@@ -1,4 +1,5 @@
 import Paginator from "@/components/Paginator";
+import ProfilesFilter from "@/components/ProfilesFilter";
 import UserCard from "@/components/UserCard";
 import Container from "@/components/ui/container";
 import { getAllProfiles } from "@/lib/data";
@@ -37,8 +38,10 @@ export default async function UsersPage({
   };
 
   return (
-    <>
-      <Container className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-8">
+    <Container className="py-8">
+      <ProfilesFilter baseURL={PAGINATOR_BASE_URL} />
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-4">
         {users.map((user) => {
           const {
             id,
@@ -64,12 +67,11 @@ export default async function UsersPage({
             />
           );
         })}
-      </Container>
+      </div>
 
       {usersCount > 0 ? (
         <Paginator
           limit={limit}
-          className="mb-8"
           currentPage={page}
           total={usersCount}
           baseUrl={PAGINATOR_BASE_URL}
@@ -79,6 +81,6 @@ export default async function UsersPage({
           No users found!
         </h2>
       )}
-    </>
+    </Container>
   );
 }

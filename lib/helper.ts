@@ -125,11 +125,7 @@ export function updateUrlWithQuery(
   const searchParams = urlObj.searchParams;
 
   Object.entries(obj).forEach(([key, value]) => {
-    if (
-      value !== undefined &&
-      value !== null &&
-      (value === 0 || value.toString().trim() !== "")
-    ) {
+    if (value !== undefined && value !== null) {
       if (searchParams.has(key)) {
         // Update existing query parameter
         searchParams.set(key, value.toString());
@@ -154,4 +150,19 @@ export function handleFetchError(code: number) {
       throw new Error("SOMETHING_WENT_WRONG");
     }
   }
+}
+
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  delay: number = 500
+) {
+  let timeoutId: ReturnType<typeof setTimeout>;
+
+  return function debounced(...args: Parameters<T>) {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
 }

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import useLoginMutation from "@/hooks/mutations/useLoginMutation";
 import { getErrorResponse, handleValidationError } from "@/lib/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormErrorAlert from "./FormErrorAlert";
@@ -26,6 +27,7 @@ export const loginBodySchema = z.object({
 export type LoginBodyType = z.infer<typeof loginBodySchema>;
 
 export default function SignInForm() {
+  const router = useRouter();
   const { loginMutateData, loginMutateAsync, isLoginPending, loginError } =
     useLoginMutation();
   const form = useForm<LoginBodyType>({
@@ -35,6 +37,7 @@ export default function SignInForm() {
   const onSubmit = async (values: LoginBodyType) => {
     try {
       await loginMutateAsync(values);
+      router.push("/");
     } catch (e) {
       const error = getErrorResponse(e);
       handleValidationError<LoginBodyType>(error, form);

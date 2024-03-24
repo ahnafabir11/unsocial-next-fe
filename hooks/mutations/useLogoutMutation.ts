@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export default function useLogoutMutation() {
   const queryClient = useQueryClient();
 
-  const { mutateAsync, error } = useMutation({
+  const { data, error, isPending, mutateAsync } = useMutation({
     mutationFn: () => logoutCurrentUser(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth"] });
@@ -12,7 +12,9 @@ export default function useLogoutMutation() {
   });
 
   return {
-    logoutMutateAsync: mutateAsync,
+    logoutData: data,
     logoutError: error,
+    isLogoutPending: isPending,
+    logoutMutateAsync: mutateAsync,
   };
 }
