@@ -8,31 +8,16 @@ export async function middleware(request: NextRequest) {
 
     await jose.jwtVerify(token, secret);
 
-    if (
-      token &&
-      (request.nextUrl.pathname === "/signin" ||
-        request.nextUrl.pathname === "/signup")
-    ) {
+    if (request.nextUrl.pathname.startsWith("/auth")) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
-    if (
-      !token &&
-      !(
-        request.nextUrl.pathname === "/signin" ||
-        request.nextUrl.pathname === "/signup"
-      )
-    ) {
-      return NextResponse.redirect(new URL("/signin", request.url));
+    if (!request.nextUrl.pathname.startsWith("/auth")) {
+      return NextResponse.redirect(new URL("/auth/signin", request.url));
     }
   } catch {
-    if (
-      !(
-        request.nextUrl.pathname === "/signin" ||
-        request.nextUrl.pathname === "/signup"
-      )
-    ) {
-      return NextResponse.redirect(new URL("/signin", request.url));
+    if (!request.nextUrl.pathname.startsWith("/auth")) {
+      return NextResponse.redirect(new URL("/auth/signin", request.url));
     }
   }
 }

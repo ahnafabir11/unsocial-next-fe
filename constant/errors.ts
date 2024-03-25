@@ -41,6 +41,11 @@ export const errors = [
     title: "Unable to unfollow this profile",
     message: "The profile you are trying to unfollow is not followed by you.",
   },
+  {
+    code: "INVALID_TOKEN",
+    title: "Unable to change password",
+    message: "The token you have provided is not valid.",
+  },
 ];
 
 export const SERVER_ERROR = [

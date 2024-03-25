@@ -12,7 +12,7 @@ export default function LogoutDropdownMenuItem() {
   const handleLogout = async () => {
     try {
       await logoutMutateAsync();
-      router.push("/signin");
+      router.push("/auth/signin");
     } catch (e) {
       showToastError(e);
     }

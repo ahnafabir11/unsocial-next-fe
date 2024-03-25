@@ -1,7 +1,7 @@
 export const success = [
   {
     code: "VERIFY_EMAIL",
-    title: "Account has been created",
+    title: "Verify your email",
     message: "Please check your mail and verify your email address.",
   },
   {
@@ -49,5 +49,10 @@ export const success = [
     code: "PROFILE_UPDATED",
     title: "Profile has been updated",
     message: "Successfully updated the changes in profile.",
+  },
+  {
+    code: "PASSWORD_UPDATED",
+    title: "Password has been updated",
+    message: "You can now login with your updated password.",
   },
 ];
