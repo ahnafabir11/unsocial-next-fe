@@ -1,4 +1,5 @@
 import EditProfileDialog from "@/components/EditProfileDialog";
+import ProfileCardFollowButton from "@/components/ProfileCardFollowButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -143,13 +144,12 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               {myself ? (
                 <EditProfileDialog fullName={fullName} about={about} />
               ) : (
-                <Button
+                <ProfileCardFollowButton
+                  id={id}
+                  myself={myself}
+                  followed={followed}
                   className="w-full md:w-auto"
-                  // onClick={handleFollowUser}
-                  // disabled={isFollowProfilePending || isUnfollowProfilePending}
-                >
-                  {followed ? "Unfollow" : "Follow"}
-                </Button>
+                />
               )}
             </div>
           </div>

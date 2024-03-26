@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
+import ProfileCardFollowButton from "./ProfileCardFollowButton";
 
 interface UserCardProps {
   id: string;
@@ -16,8 +17,6 @@ interface UserCardProps {
   followingCount: number;
   myself?: boolean;
   followed: boolean;
-  disableFollowBtn?: boolean;
-  handleFollowUser: (id: string, followed: boolean) => void;
 }
 
 export default function UserCard({
@@ -29,8 +28,6 @@ export default function UserCard({
   myself = false,
   profilePicture,
   followingCount,
-  handleFollowUser,
-  disableFollowBtn = false,
 }: UserCardProps) {
   return (
     <Card className="overflow-hidden">
@@ -76,13 +73,12 @@ export default function UserCard({
         </small>
       </div>
 
-      <Button
-        disabled={disableFollowBtn}
-        className={cn("block mb-4 mx-auto", myself && "invisible")}
-        // onClick={() => handleFollowUser(id, followed)}
-      >
-        {followed ? "Unfollow" : "Follow"}
-      </Button>
+      <ProfileCardFollowButton
+        id={id}
+        myself={myself}
+        followed={followed}
+        className="block mb-4 mx-auto"
+      />
     </Card>
   );
 }

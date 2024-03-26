@@ -33,10 +33,6 @@ export default async function UsersPage({
 
   const PAGINATOR_BASE_URL = updateUrlWithQuery("/", { page, limit, search });
 
-  const handleFollowUser = (profileId: string, followed: boolean) => {
-    console.log({ profileId, followed });
-  };
-
   return (
     <Container className="py-8">
       <ProfilesFilter baseURL={PAGINATOR_BASE_URL} />
@@ -63,7 +59,6 @@ export default async function UsersPage({
               followerCount={followerCount}
               profilePicture={profilePicture}
               followingCount={followingCount}
-              handleFollowUser={handleFollowUser}
             />
           );
         })}
