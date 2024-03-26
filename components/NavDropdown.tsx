@@ -25,8 +25,8 @@ export default async function NavDropdown() {
               <Image
                 width={100}
                 height={100}
-                src={profilePicture}
                 alt={`profile picture of ${fullName}`}
+                src={`${profilePicture}?date=${new Date()}`}
               />
             )}
           </AvatarImage>
@@ -39,13 +39,20 @@ export default async function NavDropdown() {
       <DropdownMenuContent align="end">
         <div className="flex items-center gap-2 p-2">
           <Avatar className="h-12 w-12">
-            <AvatarImage src={profilePicture ?? undefined} asChild>
+            <AvatarImage
+              src={
+                profilePicture
+                  ? `${profilePicture}?date=${new Date()}`
+                  : undefined
+              }
+              asChild
+            >
               {profilePicture && (
                 <Image
                   width={100}
                   height={100}
-                  src={profilePicture}
                   alt={`profile picture of ${fullName}`}
+                  src={`${profilePicture}?date=${new Date()}`}
                 />
               )}
             </AvatarImage>

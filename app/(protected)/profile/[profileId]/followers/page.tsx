@@ -87,16 +87,12 @@ export default async function Followers({
     throw new Error("Invalid Query Params !");
   }
 
-  const { page, limit, search } = validation.data;
+  const { page, limit } = validation.data;
 
   const { followers, totalFollowers } = await getProfileFollowers(
     params.profileId,
     validation.data
   );
-
-  const handleFollowUser = (profileId: string, followed: boolean) => {
-    console.log({ profileId, followed });
-  };
 
   const PAGINATOR_BASE_URL = updateUrlWithQuery(
     `/profile/${params.profileId}/followers`,
@@ -130,8 +126,6 @@ export default async function Followers({
               followerCount={followerCount}
               profilePicture={profilePicture}
               followingCount={followingCount}
-              handleFollowUser={handleFollowUser}
-              disableFollowBtn={false}
             />
           );
         })}
@@ -146,7 +140,7 @@ export default async function Followers({
         />
       ) : (
         <h2 className="text-3xl font-semibold tracking-tight text-center">
-          This profile has no followers
+          No followers found
         </h2>
       )}
     </Container>

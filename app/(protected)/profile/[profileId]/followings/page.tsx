@@ -87,16 +87,12 @@ export default async function Followings({
     throw new Error("Invalid Query Params !");
   }
 
-  const { page, limit, search } = validation.data;
+  const { page, limit } = validation.data;
 
   const { followings, totalFollowings } = await getProfileFollowings(
     params.profileId,
     validation.data
   );
-
-  const handleFollowUser = (profileId: string, followed: boolean) => {
-    console.log({ profileId, followed });
-  };
 
   const PAGINATOR_BASE_URL = updateUrlWithQuery(
     `/profile/${params.profileId}/followings`,
@@ -130,8 +126,6 @@ export default async function Followings({
               followerCount={followerCount}
               profilePicture={profilePicture}
               followingCount={followingCount}
-              handleFollowUser={handleFollowUser}
-              disableFollowBtn={false}
             />
           );
         })}
@@ -146,7 +140,7 @@ export default async function Followings({
         />
       ) : (
         <h2 className="text-3xl font-semibold tracking-tight text-center">
-          This profile has no followings
+          No followings found
         </h2>
       )}
     </Container>

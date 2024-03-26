@@ -24,7 +24,8 @@ import {
   showToastError,
 } from "@/lib/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
@@ -46,7 +47,7 @@ const imageSchema = z
       }
     }
     return true;
-  }, "You can select use image file type")
+  }, "You can only select image file")
   .refine((v) => {
     for (let i = 0; i < v.length; i++) {
       if (v[i].size > MAX_FILE_SIZE) {
@@ -77,14 +78,11 @@ export default function EditProfileDialog({
   fullName,
   about,
 }: EditProfileDialogProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const { profileMutateAsync, isProfileMutatePending } = useProfileMutation();
 
   const form = useForm<UpdateProfileBodyType>({
-    defaultValues: {
-      fullName,
-      about: about ?? "",
-    },
     resolver: zodResolver(updateProfileBodySchema),
   });
 
@@ -104,6 +102,7 @@ export default function EditProfileDialog({
         formData.append("removeProfilePicture", "true");
 
       await profileMutateAsync(formData);
+      router.refresh();
       setOpen(false);
     } catch (e) {
       const error = getErrorResponse(e);
@@ -112,12 +111,16 @@ export default function EditProfileDialog({
     }
   };
 
+  useEffect(() => {
+    form.reset({ fullName, about: about ?? "" });
+  }, [form, fullName, about]);
+
   return (
     <Dialog
       open={open}
-      onOpenChange={(open) => {
+      onOpenChange={() => {
         form.reset();
-        setOpen(open);
+        setOpen(!open);
       }}
     >
       <DialogTrigger asChild>

@@ -1,7 +1,6 @@
 import EditProfileDialog from "@/components/EditProfileDialog";
 import ProfileCardFollowButton from "@/components/ProfileCardFollowButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Container from "@/components/ui/container";
 import { Separator } from "@/components/ui/separator";
@@ -92,7 +91,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             priority
             width={1500}
             height={500}
-            src={coverPicture}
+            src={`${coverPicture}?date=${new Date()}`}
             className="w-full h-40 md:h-52"
             alt={`cover picture of ${fullName}`}
           />
@@ -102,13 +101,20 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
         <div className="p-4 pt-0 md:p-8 md:pt-0">
           <Avatar className="h-32 w-32 mx-auto -mt-20 mb-4 md:mx-0">
-            <AvatarImage src={profilePicture ?? undefined} asChild>
+            <AvatarImage
+              asChild
+              src={
+                profilePicture
+                  ? `${profilePicture}?date=${new Date()}`
+                  : undefined
+              }
+            >
               {profilePicture && (
                 <Image
                   width={100}
                   height={100}
-                  src={profilePicture}
                   alt={`profile picture of ${fullName}`}
+                  src={`${profilePicture}?date=${new Date()}`}
                 />
               )}
             </AvatarImage>
