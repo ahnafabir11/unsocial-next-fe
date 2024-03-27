@@ -59,9 +59,15 @@ export const resetPassword = (
   body: ResetPasswordBodyType,
   options?: AxiosRequestConfig
 ) => {
-  return axios.put<CommonResponseType>(
-    `/auth/reset-password?token=${token}`,
-    body,
-    options
-  );
+  return axios.put<CommonResponseType>("/auth/reset-password", body, {
+    params: { token },
+    ...options,
+  });
+};
+
+export const verifyUser = (token: string, options?: AxiosRequestConfig) => {
+  return axios.put<CurrentUserResponseType>("/auth/verify", null, {
+    params: { token },
+    ...options,
+  });
 };

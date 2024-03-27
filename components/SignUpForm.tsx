@@ -48,7 +48,8 @@ export default function SignUpForm() {
   const onSubmit = async (values: SignUpBodyType) => {
     try {
       await signUpMutateAsync(values);
-      router.push("/signin");
+      await (() => new Promise((resolve) => setTimeout(resolve, 5000)))();
+      router.push("/auth/signin");
     } catch (e) {
       const error = getErrorResponse(e);
       handleValidationError(error, form);

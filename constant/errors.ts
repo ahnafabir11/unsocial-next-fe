@@ -43,7 +43,7 @@ export const errors = [
   },
   {
     code: "INVALID_TOKEN",
-    title: "Unable to change password",
+    title: "Unable to perform action",
     message: "The token you have provided is not valid.",
   },
 ];

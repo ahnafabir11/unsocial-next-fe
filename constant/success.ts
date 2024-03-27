@@ -55,4 +55,9 @@ export const success = [
     title: "Password has been updated",
     message: "You can now login with your updated password.",
   },
+  {
+    code: "PROFILE_VERIFIED",
+    title: "Profile has been verified",
+    message: "You are now able to login with your email and password",
+  },
 ];
