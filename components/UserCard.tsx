@@ -45,10 +45,21 @@ export default function UserCard({
       )}
       <Avatar className="h-20 w-20 mx-auto -mt-12 mb-8">
         <AvatarImage
-          src={profilePicture ?? undefined}
-          alt={`profile picture of ${fullName}`}
-        />
-        <AvatarFallback className="text-2xl font-bold">
+          asChild
+          src={
+            profilePicture ? `${profilePicture}?date=${new Date()}` : undefined
+          }
+        >
+          {profilePicture && (
+            <Image
+              width={100}
+              height={100}
+              alt={`profile picture of ${fullName}`}
+              src={`${profilePicture}?date=${new Date()}`}
+            />
+          )}
+        </AvatarImage>
+        <AvatarFallback className="text-lg font-bold">
           {getAvatarFallback(fullName)}
         </AvatarFallback>
       </Avatar>
