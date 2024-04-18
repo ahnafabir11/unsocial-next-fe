@@ -1,10 +1,9 @@
-import _axios from 'axios'
-
-const baseURL = 'http://localhost:3001/api/v1'
+import { BASE_URL } from "@/constant/api";
+import _axios from "axios";
 
 const axios = _axios.create({
-  baseURL,
+  baseURL: BASE_URL,
   withCredentials: true,
-})
+});
 
-export default axios
+export default axios;
